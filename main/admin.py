@@ -8,7 +8,6 @@ class UserDataAdmin(admin.ModelAdmin):
     """
     date_hierarchy = 'created'
     list_display = ['id', 'user', 'email', 'mobile', 'created', 'modified']
-    list_filter = ['user']
     search_fields = ['user__username', 'email', 'mobile']
     autocomplete_fields = (('user'),)
 

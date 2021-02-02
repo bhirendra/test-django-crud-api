@@ -1,6 +1,7 @@
 from django.utils.deprecation import MiddlewareMixin
 from rest_framework.response import Response
-import keys
+
+from helper import keys
 
 
 class ResponseCustomMiddleware(MiddlewareMixin):

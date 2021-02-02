@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'helper',
     'rest_framework',
-    'main'
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'helper.middleware.ResponseCustomMiddleware',
 ]
 
 """ DRF configuration """
@@ -70,6 +72,7 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
+    # Custom token payload imported from helper>views.py
     'JWT_PAYLOAD_HANDLER': 'helper.views.jwt_custom_payload_handler',
     'JWT_EXPIRATION_DELTA': timedelta(minutes=keys.JWT_EXPIRATION_DELTA_TIME),
 }
@@ -131,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
