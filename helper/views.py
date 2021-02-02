@@ -46,6 +46,21 @@ class HelperCommon:
         """
         return datetime_instance.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(TIME_ZONE))
 
+    @staticmethod
+    def get_meta_token(meta):
+        """
+        Method used to get token from META.
+        In unit-test token is coming on the same key as token
+        but in other call its coming as HTTP_TOKEN
+        Thats why handling both for both the conditions
+        :param meta:
+        :return:
+        """
+        if keys.HTTP_TOKEN in meta:
+            token = meta.get(keys.HTTP_TOKEN)
+        else:
+            token = meta.get(keys.TOKEN)
+        return token
 
 class HelperResponse:
     """
@@ -220,8 +235,11 @@ class HelperAuthentication:
         :return:
         """
         msg = messages.AUTHENTICATION_REQUIRED
-        if keys.HTTP_TOKEN in request.META:
-            token = request.META.get(keys.HTTP_TOKEN)
+        if keys.HTTP_TOKEN in request.META or keys.TOKEN in request.META:
+            if keys.HTTP_TOKEN in request.META:
+                token = request.META.get(keys.HTTP_TOKEN)
+            else:
+                token = request.META.get(keys.TOKEN)
             """ verify token """
             decoded_json = HelperAuthentication.decode_access_token(token)
             # If decoded Json is None, then send login time out

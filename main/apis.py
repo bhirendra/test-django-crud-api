@@ -43,7 +43,9 @@ def signup(request):
     if UserData.objects.filter(user__username=username).exists():
         return HelperResponse.response_400(request, messages.USERNAME_ALREADY_EXISTS)
     else:
-        django_user = User.objects.create_user(username=username, email=email, password=password)
+        django_user = User.objects.create_user(username=username, email=email)
+        django_user.set_password(password)
+        django_user.save()
         UserData.objects.create(
             user=django_user,
             email=email,
@@ -89,7 +91,7 @@ def profile(request):
     """
     HelperCommon.print_method_title("API- User Profile")
     try:
-        decoded_json = HelperAuthentication.decode_access_token(request.META.get(keys.HTTP_TOKEN))
+        decoded_json = HelperAuthentication.decode_access_token(HelperCommon.get_meta_token(request.META))
         username = decoded_json[keys.USERNAME]
         # Get the instance of the user
         user_instance = UserData.objects.get(user__username=username)
