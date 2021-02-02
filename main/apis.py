@@ -1,14 +1,24 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from helper import keys, messages
+from helper import keys, messages, doc_descriptions, doc_serializers
 from helper.views import HelperCommon, HelperResponse, HelperAPIValidation, HelperAuthentication
 from main.models import UserData
 from main.serializers import UserDataSerializer
 
 
+@swagger_auto_schema(
+    operation_id='User Signup API', operation_description=doc_descriptions.API_USER_SIGNUP,
+    method='post', responses={
+        200: 'Token will be sent in header and a welcome message in body',
+        400: 'Invalid credentials'
+    },
+    request_body=doc_serializers.UserSignupRequestBody
+)
 @api_view(['POST'])
 def signup(request):
     """
@@ -58,6 +68,14 @@ def signup(request):
         return Response(response, status=status.HTTP_200_OK, headers={keys.TOKEN: token})
 
 
+@swagger_auto_schema(
+    operation_id='User Login API', operation_description=doc_descriptions.API_USER_LOGIN,
+    method='post', responses={
+        200: 'Token will be sent in header and a welcome message in body',
+        400: 'Invalid credentials',
+    },
+    request_body=doc_serializers.UserLoginRequestBody
+)
 @api_view(['POST'])
 def login(request):
     """
@@ -81,6 +99,13 @@ def login(request):
         return HelperResponse.response_400(request, messages.INVALID_CREDENTIALS)
 
 
+@swagger_auto_schema(
+    operation_id='User Profile API', operation_description=doc_descriptions.API_USER_LOGIN,
+    manual_parameters=[openapi.Parameter(keys.TOKEN, openapi.IN_HEADER, type=openapi.TYPE_STRING, required=True)],
+    method='get', response={
+        200: doc_serializers.UserProfileResponseBody
+    }
+)
 @api_view(['GET'])
 @HelperAuthentication.validate_access_token
 def profile(request):
