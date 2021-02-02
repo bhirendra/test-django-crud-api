@@ -1,0 +1,12 @@
+db.sqlite3
+.env
+*.xml
+*.zip
+.idea/*
+.idea/
+.idea/testDjangoCrudAPI.iml
+.idea/misc.xml
+__pycache__/
+__pycache__/*
+*__pycache__/*
+
