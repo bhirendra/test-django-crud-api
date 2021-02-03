@@ -7,7 +7,7 @@ Follow the below guidelines to run this project for demo.
 
 1. Clone the project using the following command and go to the root directory of the project
     ```
-    git clone https://github.com/bhirendra/test-django-crud-api.git
+    git clone git@github.com:bhirendra/test-django-crud-api.git
     ```
 2. Create super user for django administration using command
     ```
